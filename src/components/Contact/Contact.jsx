@@ -3,6 +3,9 @@ import { FaUser, FaPhone, FaRegTrashAlt } from 'react-icons/fa';
 import styles from './Contact.module.css';
 
 const Contact = ({ id, name, number, onDelete }) => {
+
+  
+
   return (
     <li className={styles.item}>
       <div className={styles.contactInfo}>
