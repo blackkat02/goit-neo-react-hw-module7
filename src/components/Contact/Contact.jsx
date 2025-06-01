@@ -1,15 +1,13 @@
 import PropTypes from 'prop-types';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { FaUser, FaPhone, FaRegTrashAlt } from 'react-icons/fa';
 import { deleteContact } from '../../redux/contactsSlice';
 import styles from './Contact.module.css';
 
 const Contact = ({ id, name, number }) => {
   
-  // const contactsState = useSelector((state) => state.contacts.contact)
   const dispatch = useDispatch()
   const handleDelete = (id) => {
-    // toast("Contact deleteded");
     dispatch(deleteContact(id));
   };
   
