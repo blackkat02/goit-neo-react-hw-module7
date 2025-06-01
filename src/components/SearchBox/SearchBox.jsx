@@ -1,17 +1,25 @@
-import PropTypes from 'prop-types';
 import { useId } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field } from "formik";
+import { changeFilter } from '../../redux/filtersSlice';
 import styles from './SearchBox.module.css';
 
-const SearchBox = ({ initialValues, onSearch }) => {
+const SearchBox = () => {
   const searchNameFieldId = useId();
+  const dispatch = useDispatch();
+  const filterValue = useSelector((state) => state.filters.value);
+
+  const handleChange = (e) => {
+    dispatch(changeFilter(e.target.value));
+  };
 
   return (
     <Formik
-      initialValues={initialValues}
+      initialValues={{ username: filterValue }}
+      enableReinitialize={true}
       onSubmit={() => {}}
     >
-      {({ values, handleChange }) => (
+      {() => (
         <Form className={styles.searchForm}>
           <div className={styles.formGroup}>
             <label htmlFor={searchNameFieldId} className={styles.label}>
@@ -23,24 +31,14 @@ const SearchBox = ({ initialValues, onSearch }) => {
               id={searchNameFieldId}
               className={styles.input}
               placeholder="Enter name..."
-              onChange={(e) => {
-                handleChange(e);
-                onSearch(e.target.value);
-              }}
-              value={values.username}
+              onChange={handleChange}
+              value={filterValue}
             />
           </div>
         </Form>
       )}
     </Formik>
   );
-};
-
-SearchBox.propTypes = {
-  initialValues: PropTypes.shape({
-    username: PropTypes.string
-  }).isRequired,
-  onSearch: PropTypes.func.isRequired
 };
 
 export default SearchBox;

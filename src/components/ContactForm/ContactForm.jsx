@@ -1,8 +1,9 @@
 import { useId } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import PropTypes from 'prop-types';
-import styles from './ContactForm.module.css';
 import * as Yup from "yup";
+import { addContact } from '../../redux/contactsSlice';
+import styles from './ContactForm.module.css';
 
 const contactSchema = Yup.object().shape({
   name: Yup.string()
@@ -19,18 +20,34 @@ const contactSchema = Yup.object().shape({
     .required("Phone number is required"),
 });
 
-const ContactForm = ({ onSubmit }) => {
+const ContactForm = () => {
   const nameFieldId = useId();
   const phoneFieldId = useId();
+  const dispatch = useDispatch();
+  const contacts = useSelector((state) => state.contacts.items);
+
+  const handleSubmit = (values, { resetForm }) => {
+    const isDuplicate = contacts.some(
+      contact => contact.name.toLowerCase() === values.name.toLowerCase()
+    );
+
+    if (isDuplicate) {
+      alert(`${values.name} is already in contacts!`);
+      return;
+    }
+
+    dispatch(addContact({
+      name: values.name,
+      number: values.number,
+    }));
+    resetForm();
+  };
 
   return (
     <Formik
       initialValues={{ name: '', number: '' }}
       validationSchema={contactSchema}
-      onSubmit={(values, actions) => {
-        onSubmit(values);
-        actions.resetForm();
-      }}
+      onSubmit={handleSubmit}
     >
       {({ errors, touched }) => (
         <Form className={styles.form}>
@@ -63,10 +80,6 @@ const ContactForm = ({ onSubmit }) => {
       )}
     </Formik>
   );
-};
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 };
 
 export default ContactForm;

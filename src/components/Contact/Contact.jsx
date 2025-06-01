@@ -1,9 +1,17 @@
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux'
 import { FaUser, FaPhone, FaRegTrashAlt } from 'react-icons/fa';
+import { deleteContact } from '../../redux/contactsSlice';
 import styles from './Contact.module.css';
 
-const Contact = ({ id, name, number, onDelete }) => {
-
+const Contact = ({ id, name, number }) => {
+  
+  // const contactsState = useSelector((state) => state.contacts.contact)
+  const dispatch = useDispatch()
+  const handleDelete = (id) => {
+    // toast("Contact deleteded");
+    dispatch(deleteContact(id));
+  };
   
 
   return (
@@ -21,7 +29,7 @@ const Contact = ({ id, name, number, onDelete }) => {
       
       <button 
         className={styles.deleteBtn}
-        onClick={() => onDelete(id)}
+        onClick={() => handleDelete(id)}
         aria-label="Видалити контакт"
       >
         <FaRegTrashAlt className={styles.btnIcon} />
