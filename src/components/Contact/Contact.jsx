@@ -5,12 +5,12 @@ import { deleteContact } from '../../redux/contactsSlice';
 import styles from './Contact.module.css';
 
 const Contact = ({ id, name, number }) => {
-  
+
   const dispatch = useDispatch()
   const handleDelete = (id) => {
     dispatch(deleteContact(id));
   };
-  
+
 
   return (
     <li className={styles.item}>
@@ -24,8 +24,8 @@ const Contact = ({ id, name, number }) => {
           <span className={styles.number}>{number}</span>
         </div>
       </div>
-      
-      <button 
+
+      <button
         className={styles.deleteBtn}
         onClick={() => handleDelete(id)}
         aria-label="Видалити контакт"

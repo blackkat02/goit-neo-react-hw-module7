@@ -9,7 +9,7 @@ import { changeFilter } from './redux/filtersSlice';
 const App = () => {
   const dispatch = useDispatch();
   const contacts = useSelector(state => state.contacts.items);
-  const filter = useSelector(state => state.filters.value);
+  const filter = useSelector(state => state.filters.name);
 
   const handleSearch = (term) => {
     dispatch(changeFilter(term));
