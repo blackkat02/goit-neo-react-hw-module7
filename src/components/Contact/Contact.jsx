@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux'
 import { FaUser, FaPhone, FaRegTrashAlt } from 'react-icons/fa';
 import { deleteContact } from '../../redux/contactsSlice';
@@ -10,7 +9,6 @@ const Contact = ({ id, name, number }) => {
   const handleDelete = (id) => {
     dispatch(deleteContact(id));
   };
-
 
   return (
     <li className={styles.item}>
@@ -35,13 +33,6 @@ const Contact = ({ id, name, number }) => {
       </button>
     </li>
   );
-};
-
-Contact.propTypes = {
-  id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired,
-  onDelete: PropTypes.func.isRequired,
 };
 
 export default Contact;
