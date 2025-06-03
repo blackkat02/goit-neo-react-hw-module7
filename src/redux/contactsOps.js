@@ -3,17 +3,17 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 axios.defaults.baseURL = "<https://62584f320c918296a49543e7.mockapi.io>";
 
-export const getContactList = createAsyncThunk("contacts/fetchAll", async () => {
+export const getContactsSliceThunk = createAsyncThunk("contacts/fetchAll", async () => {
   const response = await axios.get("/contacts");
   return response.data;
 });
 
-export const createArticleThunk = createAsyncThunk("contacts/create", async () => {
+export const createContactsSliceThunk = createAsyncThunk("contacts/create", async () => {
   const response = await axios.post("/contacts");
   return response.data;
 });
 
-export const removeArticleThunk = createAsyncThunk("contacts/remove", async () => {
+export const removeContactsSliceThunk = createAsyncThunk("contacts/remove", async () => {
   const response = await axios.post("/contacts");
   return response.data;
 });
