@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchContactList } from "./contactsOps";
+import { getContactList, createArticleThunk, removeArticleThunk } from "./contactsOps";
 
 const contactsSliceReducer = createSlice({
   name: 'contacts',
