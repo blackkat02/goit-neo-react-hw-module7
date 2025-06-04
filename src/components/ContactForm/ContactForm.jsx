@@ -39,11 +39,11 @@ const ContactForm = () => {
 
       await dispatch(createContactsSliceThunk({
         name: values.name,
-        phone: values.number, // Зверніть увагу на поле - можливо ваш API очікує 'phone' замість 'number'
+        phone: values.number,
       })).unwrap();
 
       resetForm();
-      dispatch(getContactsSliceThunk()); // Оновлюємо список контактів після додавання
+      dispatch(getContactsSliceThunk());
     } catch (error) {
       console.error('Failed to add contact:', error);
       alert('Failed to add contact. Please try again.');
