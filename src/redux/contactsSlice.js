@@ -5,8 +5,8 @@ const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
     items: [],
-    // isLoading: false,
-    // isError: false,
+    isLoading: false,
+    isError: false,
   },
   extraReducers: (builder) => {
     builder
@@ -16,9 +16,6 @@ const contactsSlice = createSlice({
       .addCase(createContactsSliceThunk.fulfilled, (state, { payload }) => {
         state.data.push(payload)
       })
-      // .addCase(updateArticleThunk.fulfilled, (state, { payload }) => {
-      //   state.data.push(payload)
-      // })
       .addCase(removeContactsSliceThunk.fulfilled, (state, { payload }) => {
         state.data.push(payload)
       })
