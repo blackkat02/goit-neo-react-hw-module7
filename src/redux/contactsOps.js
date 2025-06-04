@@ -1,43 +1,40 @@
-import axios from "axios";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-axios.defaults.baseURL = "<https://62584f320c918296a49543e7.mockapi.io>";
+axios.defaults.baseURL = "https://62584f320c918296a49543e7.mockapi.io";
 
-export const getContactsSliceThunk = createAsyncThunk("contacts/fetchAll", async () => {
-  const response = await axios.get("contacts");
-  return response.data;
-});
+export const getContactsSliceThunk = createAsyncThunk(
+  'contacts/fetchAll',
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get("/contacts");
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
-export const createContactsSliceThunk = createAsyncThunk("contacts/addContact", async () => {
-  const response = await axios.post("contacts", props);
-  return response.data;
-});
+export const createContactsSliceThunk = createAsyncThunk(
+  'contacts/addContact',
+  async (contact, thunkAPI) => {
+    try {
+      const response = await axios.post(API_URL, contact);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
 
-export const removeContactsSliceThunk = createAsyncThunk("contacts/deleteContact", async () => {
-  const response = await axios.post("contacts", props);
-  return response.data;
-});
-
-
-// import { createAsyncThunk } from '@reduxjs/toolkit'
-// import axios from 'axios'
-
-// axios.defaults.baseURL = 'https://64689aefe99f0ba0a8286f54.mockapi.io/'
-
-// export const getArticlesThunk = createAsyncThunk('articles/get-all', async () => {
-//   const { data } = await axios('articles')
-//   return data
-// })
-
-// export const createArticleThunk = createAsyncThunk('articles/create', async (props) => {
-//   const { data } = await axios.post('articles', props)
-//   return data
-// })
-// export const updateArticleThunk = createAsyncThunk('articles/update', async (props) => {
-//   const { data } = await axios.post('articles', props)
-//   return data
-// })
-// export const removeArticleThunk = createAsyncThunk('articles/remove', async (props) => {
-//   const { data } = await axios.post('articles', props)
-//   return data
-// })
+export const removeContactsSliceThunk = createAsyncThunk(
+  'contacts/deleteContact',
+  async (contactId, thunkAPI) => {
+    try {
+      await axios.delete(`${API_URL}/${contactId}`);
+      return contactId;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);

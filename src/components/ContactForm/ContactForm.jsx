@@ -2,7 +2,7 @@ import { useId } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { addContact } from '../../redux/contactsSlice';
+import { createContactsSliceThunk } from '../../redux/contactsOps';
 import styles from './ContactForm.module.css';
 
 const contactSchema = Yup.object().shape({
@@ -36,7 +36,7 @@ const ContactForm = () => {
       return;
     }
 
-    dispatch(addContact({
+    dispatch(createContactsSliceThunk({
       name: values.name,
       number: values.number,
     }));

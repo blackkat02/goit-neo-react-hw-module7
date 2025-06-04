@@ -3,7 +3,7 @@ import ContactList from './components/ContactList/ContactList';
 import SearchBox from './components/SearchBox/SearchBox';
 import ContactForm from './components/ContactForm/ContactForm';
 import styles from './App.module.css';
-import { deleteContact } from './redux/contactsSlice';
+import { removeContactsSliceThunk } from './redux/contactsOps';
 import { changeFilter } from './redux/filtersSlice';
 
 const App = () => {
@@ -16,7 +16,7 @@ const App = () => {
   };
 
   const handleDeleteContact = (id) => {
-    dispatch(deleteContact(id));
+    dispatch(removeContactsSliceThunk(id));
   };
 
   const filteredContacts = contacts.filter(contact =>
