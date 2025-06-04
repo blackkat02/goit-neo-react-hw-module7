@@ -19,7 +19,10 @@ export const createContactsSliceThunk = createAsyncThunk(
   'contacts/addContact',
   async (contact, thunkAPI) => {
     try {
-      const response = await axios.post(API_URL, contact);
+      const response = await axios.post("/contacts/", {
+        name: contact.name,
+        phone: contact.phone,
+      });
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -29,10 +32,10 @@ export const createContactsSliceThunk = createAsyncThunk(
 
 export const removeContactsSliceThunk = createAsyncThunk(
   'contacts/deleteContact',
-  async (contactId, thunkAPI) => {
+  async (id, thunkAPI) => {
     try {
-      await axios.delete(`${API_URL}/${contactId}`);
-      return contactId;
+      await axios.delete(`/contacts/${id}`);
+      return id;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

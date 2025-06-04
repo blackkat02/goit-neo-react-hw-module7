@@ -2,21 +2,21 @@ import { useId } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { createContactsSliceThunk } from '../../redux/contactsOps';
+import { createContactsSliceThunk, getContactsSliceThunk } from '../../redux/contactsOps';
 import styles from './ContactForm.module.css';
 
-const contactSchema = Yup.object().shape({
+const ContactSchema = Yup.object().shape({
   name: Yup.string()
     .min(3, "Name must be at least 3 characters")
     .max(50, "Name must be 50 characters or less")
     .required("Name is required"),
   number: Yup.string()
     .matches(
-      /^[0-9-+()\s]+$/,
+      /^[\d\s+()-]+$/,
       "Phone number can only contain numbers, +, -, (, ) and spaces"
     )
-    .min(3, "Phone number must be at least 3 characters")
-    .max(50, "Phone number must be 50 characters or less")
+    .min(5, "Phone number must be at least 5 characters")
+    .max(20, "Phone number must be 20 characters or less")
     .required("Phone number is required"),
 });
 
@@ -24,32 +24,39 @@ const ContactForm = () => {
   const nameFieldId = useId();
   const phoneFieldId = useId();
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts.items);
+  const { items: contacts, isLoading } = useSelector((state) => state.contacts);
 
-  const handleSubmit = (values, { resetForm }) => {
-    const isDuplicate = contacts.some(
-      contact => contact.name.toLowerCase() === values.name.toLowerCase()
-    );
+  const handleSubmit = async (values, { resetForm }) => {
+    try {
+      const isDuplicate = contacts.some(
+        contact => contact.name.toLowerCase() === values.name.toLowerCase()
+      );
 
-    if (isDuplicate) {
-      alert(`${values.name} is already in contacts!`);
-      return;
+      if (isDuplicate) {
+        alert(`${values.name} is already in contacts!`);
+        return;
+      }
+
+      await dispatch(createContactsSliceThunk({
+        name: values.name,
+        phone: values.number, // Зверніть увагу на поле - можливо ваш API очікує 'phone' замість 'number'
+      })).unwrap();
+
+      resetForm();
+      dispatch(getContactsSliceThunk()); // Оновлюємо список контактів після додавання
+    } catch (error) {
+      console.error('Failed to add contact:', error);
+      alert('Failed to add contact. Please try again.');
     }
-
-    dispatch(createContactsSliceThunk({
-      name: values.name,
-      number: values.number,
-    }));
-    resetForm();
   };
 
   return (
     <Formik
       initialValues={{ name: '', number: '' }}
-      validationSchema={contactSchema}
+      validationSchema={ContactSchema}
       onSubmit={handleSubmit}
     >
-      {({ errors, touched }) => (
+      {({ errors, touched, isSubmitting }) => (
         <Form className={styles.form}>
           <div className={styles.formGroup}>
             <label htmlFor={nameFieldId}>Name</label>
@@ -58,6 +65,7 @@ const ContactForm = () => {
               name="name" 
               id={nameFieldId}
               className={`${styles.input} ${errors.name && touched.name ? styles.error : ''}`}
+              disabled={isLoading}
             />
             <ErrorMessage name="name" component="div" className={styles.errorMessage} />
           </div>
@@ -69,12 +77,17 @@ const ContactForm = () => {
               name="number" 
               id={phoneFieldId}
               className={`${styles.input} ${errors.number && touched.number ? styles.error : ''}`}
+              disabled={isLoading}
             />
             <ErrorMessage name="number" component="div" className={styles.errorMessage} />
           </div>
           
-          <button type="submit" className={styles.button}>
-            Add Contact
+          <button 
+            type="submit" 
+            className={styles.button}
+            disabled={isLoading || isSubmitting}
+          >
+            {isLoading ? 'Adding...' : 'Add Contact'}
           </button>
         </Form>
       )}
