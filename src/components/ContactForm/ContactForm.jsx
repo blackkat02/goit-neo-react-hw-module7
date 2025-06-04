@@ -2,7 +2,7 @@ import { useId } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { createContactsSliceThunk, getContactsSliceThunk } from '../../redux/contactsOps';
+import { createContactsSliceThunk } from '../../redux/contactsOps';
 import styles from './ContactForm.module.css';
 
 const ContactSchema = Yup.object().shape({
@@ -43,7 +43,6 @@ const ContactForm = () => {
       })).unwrap();
 
       resetForm();
-      dispatch(getContactsSliceThunk());
     } catch (error) {
       console.error('Failed to add contact:', error);
       alert('Failed to add contact. Please try again.');

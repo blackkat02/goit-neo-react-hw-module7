@@ -1,12 +1,12 @@
-import { useDispatch } from 'react-redux'
 import { FaUser, FaPhone, FaRegTrashAlt } from 'react-icons/fa';
+import { useDispatch } from 'react-redux';
 import { removeContactsSliceThunk } from '../../redux/contactsOps';
 import styles from './Contact.module.css';
 
 const Contact = ({ id, name, number }) => {
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
-  const handleDelete = (id) => {
+  const handleDelete = () => {
     dispatch(removeContactsSliceThunk(id));
   };
 
@@ -25,7 +25,7 @@ const Contact = ({ id, name, number }) => {
 
       <button
         className={styles.deleteBtn}
-        onClick={() => handleDelete(id)}
+        onClick={handleDelete}
         aria-label="Видалити контакт"
       >
         <FaRegTrashAlt className={styles.btnIcon} />
