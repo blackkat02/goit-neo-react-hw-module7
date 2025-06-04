@@ -6,11 +6,13 @@ const filtersSliceReducer = createSlice({
     name: ""
   },
   reducers: {
-    changeFilter(state, action) {
-      state.name = action.payload;
+    changeFilter(state, payload) {
+      state.name = payload;
     },
   },
 });
 
 export const { changeFilter } = filtersSliceReducer.actions;
 export default filtersSliceReducer.reducer;
+
+
