@@ -24,29 +24,14 @@ const ContactForm = () => {
   const nameFieldId = useId();
   const phoneFieldId = useId();
   const dispatch = useDispatch();
-  const { items: contacts, isLoading } = useSelector((state) => state.contacts);
+  const { isLoading } = useSelector((state) => state.contacts);
 
-  const handleSubmit = async (values, { resetForm }) => {
-    try {
-      const isDuplicate = contacts.some(
-        contact => contact.name.toLowerCase() === values.name.toLowerCase()
-      );
-
-      if (isDuplicate) {
-        alert(`${values.name} is already in contacts!`);
-        return;
-      }
-
-      await dispatch(createContactsSliceThunk({
-        name: values.name,
-        phone: values.number,
-      })).unwrap();
-
-      resetForm();
-    } catch (error) {
-      console.error('Failed to add contact:', error);
-      alert('Failed to add contact. Please try again.');
-    }
+  const handleSubmit = (values, { resetForm }) => {
+    dispatch(createContactsSliceThunk({
+      name: values.name,
+      number: values.number,
+    }));
+    resetForm();
   };
 
   return (
